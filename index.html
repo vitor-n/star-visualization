@@ -85,15 +85,15 @@
 
             <h2>Explore:</h2>
 
-            <input type="checkbox" id="simulation-check"> Hertzsprung–Russell diagram
+            <input type="checkbox" class="vis_button" id="simulation-check"> Hertzsprung–Russell diagram
 
             <h3>Organizar por:</h3>
 
-            <input type="radio" id="sort_by_distance" name="fav_language" checked="checked"> distância da Terra
+            <input type="radio" class="vis_button" id="sort_by_distance" name="fav_language" checked="checked"> distância da Terra
             <br>
-            <input type="radio" id="sort_by_temp" name="fav_language"> temperatura
+            <input type="radio" class="vis_button" id="sort_by_temp" name="fav_language"> temperatura
             <br>
-            <input type="radio" id="sort_by_diameter" name="fav_language"> diâmetro
+            <input type="radio" class="vis_button" id="sort_by_diameter" name="fav_language"> diâmetro
 
             <h3>Distância (Anos-Luz):</h3>
 
@@ -108,11 +108,11 @@
             <br>
 
             <label for="a">Separar:</label>
-            <input type="input" min="0" max="360" step="5" value="0" id="cluster" onSubmit="window.location.reload()">
+            <input type="input" min="0" max="360" step="5" value="0" id="cluster">
 
             <br>
             <br>
-            <input type="button" value="Carregar!" onClick="window.location.reload()">
+            <input type="button" class="vis_button" value="Carregar!">
 
         </div>
     </div>
