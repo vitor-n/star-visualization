@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Estrelas</title>
 
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
@@ -21,6 +21,16 @@
 
         }
 
+        h1 {
+            font-size: 45px;
+            font-weight: bolder;
+        }
+
+        label {
+            width: 100px;
+            display: inline-block;
+        }
+
         #my_dataviz {
             position: absolute;
             left: 800px;
@@ -30,11 +40,14 @@
             font-size: larger;
             background-color: #081122;
             color: white;
-            position: fixed;
-            width: 500px;
+            width: 600px;
             padding: 40px;
+            top: 0;
+            bottom: 0;
+            position: fixed;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
-
 
         .node:hover {
             stroke-width: 5px !important;
@@ -51,56 +64,58 @@
 
     <div id="container">
         <div id="card">
-            <h1>Estrelas 🌌</h1>
+            <h1><u>Estrelas 🌌</u></h1>
 
             Uma visualização interativa de algumas das estrelas mais próximas da Terra :D
-            
-            <p>    
+
+            <p>
                 Cada circulo ao lado representa uma estrela, circulos maiores representam estrelas maiores.
             </p>
 
-            Estrelas com tom mais azulado são mais quentes, enquanto estrelas com tom avermelhado são mais frias! Sabia
-            disso?
+            <p>
+                Estrelas com tom mais azulado são mais quentes, enquanto estrelas com tom avermelhado são mais frias!
+                Sabia
+                disso?
+            </p>
 
+            Dica: você pode ver mais informações sobre as estrelas passando o mouse por elas! :0
             <br>
             <br>
             <hr>
 
             <h2>Explore:</h2>
 
+            <input type="checkbox" id="simulation-check"> Hertzsprung–Russell diagram
 
-            <input type="checkbox" id="simulation-check"> Hertzsprung–Russell diagram?
-            <br>
-            <br>
-            <input type="radio" id="sort_by_distance" name="fav_language" checked="checked"> organizar por distância da Terra
-            <br>
-            <input type="radio" id="sort_by_temp" name="fav_language"> organizar por temperatura
-            <br>
-            <input type="radio" id="sort_by_diameter" name="fav_language"> organizar por diâmetro
+            <h3>Organizar por:</h3>
 
+            <input type="radio" id="sort_by_distance" name="fav_language" checked="checked"> distância da Terra
+            <br>
+            <input type="radio" id="sort_by_temp" name="fav_language"> temperatura
+            <br>
+            <input type="radio" id="sort_by_diameter" name="fav_language"> diâmetro
+
+            <h3>Distância (Anos-Luz):</h3>
+
+            <label for="a">Mínima</label>
+            <input type="input" value="0" id="nValue">
 
             <br>
-            <br>
-            Distância mínima: <input type="number" value="0" id="nValue"> anos luz.
+
+            <label for="a">Máxima:</label>
+            <input type="input" value="400" id="mValue">
 
             <br>
-            Distância máxima: <input type="number" min="0" max="360" step="5" value="1000" id="mValue"> anos luz.
 
-            Aglomerar?
-            <input type="input" min="0" max="360" step="5" value="1000" id="cluster"
-                onSubmit="window.location.reload()">
+            <label for="a">Separar:</label>
+            <input type="input" min="0" max="360" step="5" value="0" id="cluster" onSubmit="window.location.reload()">
 
             <br>
             <br>
             <input type="button" value="Carregar!" onClick="window.location.reload()">
 
         </div>
-
     </div>
-
-
-
-
 
     <script src="script.js"></script>
 
