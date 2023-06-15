@@ -22,22 +22,23 @@ sort_by_distance.addEventListener("click", reloadPage);
 start_simulation.addEventListener("click", reloadPage);
 
 // Read data
-function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sort_by_distance, sort_by_diameter, start_simulation) {
+function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sort_by_distance, sort_by_diameter, start_simulation, show_diameter) {
   d3.csv("star_data_2.csv", function (data) {
 
     // Filter a bit the data -> more than 1 million inhabitants
     data = data.filter(function (d) { return Number(d.distance_l) >= myVarValue })
     data = data.filter(function (d) { return Number(d.distance_l) < myVarValue2 })
-    data = data.filter(function (d) { return Number(d.distance_l) < 400 })
+    data = data.filter(function (d) { return Number(d.distance_l) < 1000 })
+    data = data.filter(function (d) { return Number(d.diameter) < 200 })
     data = data.filter(function (d) { return Number(d.star_temp) != 0 })
 
 
     if (sort_by_temp) {
-      data = data.sort(function(a,b){ return b.star_temp - a.star_temp; })
+      data = data.sort(function (a, b) { return b.star_temp - a.star_temp; })
     } else if (sort_by_distance) {
-      data = data.sort(function(a,b){ return a.diameter - b.diameter; })
+      data = data.sort(function (a, b) { return a.diameter - b.diameter; })
     } else if (sort_by_diameter) {
-      data = data.sort(function(a,b){ return a.distance_l - b.distance_l; })
+      data = data.sort(function (a, b) { return a.distance_l - b.distance_l; })
     }
 
     // Color palette for continents?
@@ -47,7 +48,7 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
     var colorScale = d3.scaleSequential()
       .domain([3500, 10000]) // Calculate the extent of temperature values
       .interpolator(d3.interpolateRdYlBu); // Use d3.interpolateBlues for high temperatures
-    
+
     // Size scale for countries
     var size = d3.scaleLinear()
       .domain([0, 150])
@@ -62,19 +63,19 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
       .style("bottom", "40px")
       .attr("class", "tooltip")
       .style("border-radius", "10px")
-      
+
     // Three function that change the tooltip when user hover / move / leave a cell
 
     var mousemove = function (d) {
       Tooltip
         .html('<u>' + d.star_name + '</u>' +
-              "<br>" + "<b>Diâmetro: </b>" + d.diameter + " vezes o tamanho do sol" +
-              "<br>" + "<b>Distância: </b>" + d.distance_l + " Anos Luz" +
-              "<br>" + "<b>Temperatura: </b>" + d.star_temp + " Kelvin" +
-              "<br>" + "<b>Magnitude Absoluta: </b>" + d.mag +
-              "<br>" + "<b>Magnitude Aparente: </b>" + d.mag_a)
+          "<br>" + "<b>Diâmetro: </b>" + d.diameter + " vezes o tamanho do sol" +
+          "<br>" + "<b>Distância: </b>" + d.distance_l + " Anos Luz" +
+          "<br>" + "<b>Temperatura: </b>" + d.star_temp + " Kelvin" +
+          "<br>" + "<b>Magnitude Absoluta: </b>" + d.mag +
+          "<br>" + "<b>Magnitude Aparente: </b>" + d.mag_a)
     }
-    
+
     var mouseover = function (d) {
       Tooltip
         .style("opacity", 1)
@@ -87,7 +88,7 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
 
     var d = cluster;
     var width = cluster * 30 + 800;
-    var a = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50]
+    var a = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]
 
     var svg = d3.select("#my_dataviz")
       .append("svg")
@@ -99,12 +100,16 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
 
     var mapin = d3.scaleLinear()
       .domain([9000, 3000])
-      .range([-350,350])
+      .range([-width / 2 + 50, width / 2 - 50])
 
 
     var mapin2 = d3.scaleLinear()
-    .domain([-10,20])
-    .range([-400,400])
+      .domain([-10, 20])
+      .range([-height / 2, height / 2])
+
+    var mapin3 = d3.scaleLinear()
+      .domain([-10, 20])
+      .range([-height / 2, height / 2])
 
 
     var node = svg.append("g")
@@ -116,16 +121,16 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
       .attr("cx", width / 2)
       .attr("cy", height / 2)
       .attr("r", function (d) { return size(d.diameter) })
-      .style("fill", function (d) { return color(+d.distance_type); })  
+      .style("fill", function (d) { return color(+d.distance_type); })
       .style("fill", function (d) { return colorScale(+d.star_temp); })
       .style("fill-opacity", 0.95)
       .attr("stroke", "black")
       .attr("fill", "white")
       .style("stroke-width", 2)
-      .on("mouseover", mouseover) // What to do when hovered
+      .on("mouseover", mouseover)
       .on("mousemove", mousemove)
       .on("mouseleave", mouseleave)
-      .call(d3.drag() // call specific function when circle is dragged
+      .call(d3.drag() 
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended));
@@ -133,36 +138,37 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
 
 
     // Features of the forces applied to the nodes:
-    var simulation = d3.forceSimulation()
-      .force("x", d3.forceX().strength(0.15).x( function(d){ return x(d.distance_type) } ))
-      .force("y", d3.forceY().strength(0.15).y( height/2 ))
-      .force("center", d3.forceCenter().x(width/2).y(height / 2)) 
+    var simulation1 = d3.forceSimulation()
+      .force("x", d3.forceX().strength(0.15).x(function (d) { return x(d.distance_type) }))
+      .force("y", d3.forceY().strength(0.15).y(height / 2))
+      .force("center", d3.forceCenter().x(width / 2).y(height / 2))
       .force("charge", d3.forceManyBody().strength(-13)) // Nodes are attracted one each other of value is > 0
       .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return (size(d.diameter) + 3) }).iterations(1)); // Force that avoids circle overlapping
 
     var simulation2 = d3.forceSimulation()
-      .force("x", d3.forceX().strength(0.1).x(function (d) {return (width / 2 + mapin(+d.star_temp))}))
-      .force("y", d3.forceY().strength(0.1).y(function (d) {return (height / 2 + mapin2(+d.mag))}))
+      .force("x", d3.forceX().strength(0.1).x(function (d) { return (width / 2 + mapin(+d.star_temp)) }))
+      .force("y", d3.forceY().strength(0.1).y(function (d) { return (height / 2 + mapin2(+d.mag)) }))
       .force("charge", d3.forceManyBody().strength(-0.15)) // Nodes are attracted one each other of value is > 0
+
 
     if (start_simulation) {
       simulation2
-      .nodes(data)
-      .on("tick", function (d){
-        node
-          .attr("cx", function (d) { return d.x; })
-          .attr("cy", function (d) { return d.y; })
-    });
+        .nodes(data)
+        .on("tick", function (d) {
+          node
+            .attr("cx", function (d) { return d.x; }) 
+            .attr("cy", function (d) { return d.y; })
+        });
+        
     } else {
-      simulation
-      .nodes(data)
-      .on("tick", function (d){
-        node
-          .attr("cx", function (d) { return d.x; })
-          .attr("cy", function (d) { return d.y; })
-    });
+      simulation1
+        .nodes(data)
+        .on("tick", function (d) {
+          node
+            .attr("cx", function (d) { return d.x; })
+            .attr("cy", function (d) { return d.y; })
+        });
     }
-
 
     function dragstarted(d) {
       if (!d3.event.active) simulation.alphaTarget(.03).restart();
@@ -170,7 +176,7 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
       d.fy = d.y;
     }
     function dragged(d) {
-      d.fx = d3.event.x;  
+      d.fx = d3.event.x;
       d.fy = d3.event.y;
     }
     function dragended(d) {
