@@ -12,14 +12,17 @@ var sort_by_diameter = document.getElementById("sort_by_diameter");
 var sort_by_distance = document.getElementById("sort_by_distance");
 var start_simulation = document.getElementById("simulation-check");
 
-function reloadPage() {
-  location.reload();
+var buttons = document.getElementsByClassName("vis_button")
+
+function reloadVis() {
+  d3.selectAll('svg').remove()
+  d3.selectAll('node').remove()
+  updateVisualization(myVarInput.value, myVarInput2.value, cluster.value, sort_by_temp.checked, sort_by_diameter.checked, sort_by_distance.checked, start_simulation.checked);
 }
 
-sort_by_temp.addEventListener("click", reloadPage);
-sort_by_diameter.addEventListener("click", reloadPage);
-sort_by_distance.addEventListener("click", reloadPage);
-start_simulation.addEventListener("click", reloadPage);
+Array.from(buttons).forEach(function(element) {
+  element.addEventListener('click', reloadVis);
+});
 
 // Read data
 function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sort_by_distance, sort_by_diameter, start_simulation, show_diameter) {
