@@ -20,7 +20,7 @@ function reloadVis() {
   updateVisualization(myVarInput.value, myVarInput2.value, cluster.value, sort_by_temp.checked, sort_by_diameter.checked, sort_by_distance.checked, start_simulation.checked);
 }
 
-Array.from(buttons).forEach(function(element) {
+Array.from(buttons).forEach(function (element) {
   element.addEventListener('click', reloadVis);
 });
 
@@ -44,16 +44,15 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
     }
 
     var color = d3.scaleOrdinal()
-    .range(d3.schemeSet1);
+      .range(d3.schemeSet1);
 
     var colorScale = d3.scaleSequential()
-      .domain([3500, 10000]) 
+      .domain([3500, 10000])
       .interpolator(d3.interpolateRdYlBu);
 
     var size = d3.scaleLinear()
       .domain([0, 150])
       .range([5, 80])
-
 
     var Tooltip = d3.select("#my_dataviz")
       .append("div")
@@ -129,7 +128,7 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
       .on("mouseover", mouseover)
       .on("mousemove", mousemove)
       .on("mouseleave", mouseleave)
-      .call(d3.drag() 
+      .call(d3.drag()
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended));
@@ -139,7 +138,7 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
       .force("y", d3.forceY().strength(0.15).y(height / 2))
       .force("center", d3.forceCenter().x(width / 2).y(height / 2))
       .force("charge", d3.forceManyBody().strength(-13))
-      .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return (size(d.diameter) + 3) }).iterations(1)); 
+      .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return (size(d.diameter) + 3) }).iterations(1));
 
     var simulation2 = d3.forceSimulation()
       .force("x", d3.forceX().strength(0.1).x(function (d) { return (width / 2 + mapin(+d.star_temp)) }))
@@ -152,10 +151,10 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
         .nodes(data)
         .on("tick", function (d) {
           node
-            .attr("cx", function (d) { return d.x; }) 
+            .attr("cx", function (d) { return d.x; })
             .attr("cy", function (d) { return d.y; })
         });
-        
+
     } else {
       simulation1
         .nodes(data)
