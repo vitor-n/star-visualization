@@ -24,6 +24,7 @@ Array.from(buttons).forEach(function(element) {
   element.addEventListener('click', reloadVis);
 });
 
+// Read data
 function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sort_by_distance, sort_by_diameter, start_simulation, show_diameter) {
   d3.csv("star_data.csv", function (data) {
 
@@ -43,9 +44,8 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
     }
 
     var color = d3.scaleOrdinal()
-      .range(d3.schemeSet1);
+    .range(d3.schemeSet1);
 
-    
     var colorScale = d3.scaleSequential()
       .domain([3500, 10000]) 
       .interpolator(d3.interpolateRdYlBu);
