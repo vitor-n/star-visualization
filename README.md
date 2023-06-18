@@ -24,15 +24,10 @@ Em resumo, o diagrama de Hertzsprung-Russell, a cor das estrelas, a temperatura,
 
 ## A base de dados
 
-A base dados foi obtida por meio de um scrapping do site [Stellar Database](http://www.stellar-database.com/).
-
-## Sobre o processo de criar a visualização
-
-Após obter a base de dados e limpar a mesma, a visualização foi criada a parti da biblioteca D3.js.
+A base dados foi obtida por meio de scrapping do site [Stellar Database](http://www.stellar-database.com/).
 
 ## Preview
 
-O site está disponivel em: [Star Visualization](https://vito0182.github.io/star-visualization/). Caso o site não se adeque a tela do dispositivo que você está utilizando, recomendo diminuir ou aumentar o zoom da página. 
-
+O site está disponivel em: [Star Visualization](https://vito0182.github.io/star-visualization/).
 ![Stars Visualization Preview](preview.png)
 
