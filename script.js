@@ -26,9 +26,8 @@ Array.from(buttons).forEach(function(element) {
 
 // Read data
 function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sort_by_distance, sort_by_diameter, start_simulation, show_diameter) {
-  d3.csv("star_data_2.csv", function (data) {
+  d3.csv("star_data.csv", function (data) {
 
-    // Filter a bit the data -> more than 1 million inhabitants
     data = data.filter(function (d) { return Number(d.distance_l) >= myVarValue })
     data = data.filter(function (d) { return Number(d.distance_l) < myVarValue2 })
     data = data.filter(function (d) { return Number(d.distance_l) < 1000 })
@@ -43,21 +42,16 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
     } else if (sort_by_diameter) {
       data = data.sort(function (a, b) { return a.distance_l - b.distance_l; })
     }
-
-    // Color palette for continents?
-    var color = d3.scaleOrdinal()
-      .range(d3.schemeSet1);
-
     var colorScale = d3.scaleSequential()
-      .domain([3500, 10000]) // Calculate the extent of temperature values
-      .interpolator(d3.interpolateRdYlBu); // Use d3.interpolateBlues for high temperatures
+      .domain([3500, 10000]) 
+      .interpolator(d3.interpolateRdYlBu);
 
     // Size scale for countries
     var size = d3.scaleLinear()
       .domain([0, 150])
-      .range([5, 80])  // circle will be between 7 and 55 px wide 
+      .range([5, 80])
 
-    // create a tooltip
+
     var Tooltip = d3.select("#my_dataviz")
       .append("div")
       .style("color", "white")
@@ -67,7 +61,6 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
       .attr("class", "tooltip")
       .style("border-radius", "10px")
 
-    // Three function that change the tooltip when user hover / move / leave a cell
 
     var mousemove = function (d) {
       Tooltip
@@ -138,20 +131,17 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
         .on("drag", dragged)
         .on("end", dragended));
 
-
-
-    // Features of the forces applied to the nodes:
     var simulation1 = d3.forceSimulation()
       .force("x", d3.forceX().strength(0.15).x(function (d) { return x(d.distance_type) }))
       .force("y", d3.forceY().strength(0.15).y(height / 2))
       .force("center", d3.forceCenter().x(width / 2).y(height / 2))
-      .force("charge", d3.forceManyBody().strength(-13)) // Nodes are attracted one each other of value is > 0
-      .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return (size(d.diameter) + 3) }).iterations(1)); // Force that avoids circle overlapping
+      .force("charge", d3.forceManyBody().strength(-13))
+      .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return (size(d.diameter) + 3) }).iterations(1)); 
 
     var simulation2 = d3.forceSimulation()
       .force("x", d3.forceX().strength(0.1).x(function (d) { return (width / 2 + mapin(+d.star_temp)) }))
       .force("y", d3.forceY().strength(0.1).y(function (d) { return (height / 2 + mapin2(+d.mag)) }))
-      .force("charge", d3.forceManyBody().strength(-0.15)) // Nodes are attracted one each other of value is > 0
+      .force("charge", d3.forceManyBody().strength(-0.15))
 
 
     if (start_simulation) {
