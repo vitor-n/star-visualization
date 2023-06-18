@@ -24,7 +24,6 @@ Array.from(buttons).forEach(function(element) {
   element.addEventListener('click', reloadVis);
 });
 
-// Read data
 function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sort_by_distance, sort_by_diameter, start_simulation, show_diameter) {
   d3.csv("star_data.csv", function (data) {
 
@@ -42,11 +41,15 @@ function updateVisualization(myVarValue, myVarValue2, cluster, sort_by_temp, sor
     } else if (sort_by_diameter) {
       data = data.sort(function (a, b) { return a.distance_l - b.distance_l; })
     }
+
+    var color = d3.scaleOrdinal()
+      .range(d3.schemeSet1);
+
+    
     var colorScale = d3.scaleSequential()
       .domain([3500, 10000]) 
       .interpolator(d3.interpolateRdYlBu);
 
-    // Size scale for countries
     var size = d3.scaleLinear()
       .domain([0, 150])
       .range([5, 80])
