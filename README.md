@@ -2,7 +2,7 @@
 
 Estava com vontadade de experimentar o processo de criar uma visualização interativa. Por esse motivo, fiz este trabalho alternativo, que consiste numa visualização de algumas das principais estrelas mais próximas da Terra. Segue abaixo alguns conceitos que a visualização busca demonstrar:
 
-## Diagra de HR
+## Diagrama de HR
 
 O diagrama de Hertzsprung-Russell (HR) é uma ferramenta fundamental na astronomia para representar as propriedades das estrelas. Nesse diagrama, as estrelas são plotadas em um gráfico bidimensional, com o eixo horizontal representando a temperatura efetiva da estrela e o eixo vertical representando a luminosidade ou brilho intrínseco.
 
